@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://cdcmcl34prrtp"]
+
+[ext_resource type="Texture2D" uid="uid://by6rlllsp3pby" path="res://Assets/box/Idle.png" id="1_lcj4v"]
+
+[sub_resource type="GDScript" id="GDScript_la8pe"]
+script/source = "extends StaticBody2D
+
+var SPEED = 75
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	self.position.x -= SPEED * delta
+
+
+func _on_area_2d_body_entered(body):
+	if \"Player\" in body.name:
+		body.queue_free()
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jpuks"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r5jxp"]
+
+[node name="BoxStaticBody2D" type="StaticBody2D"]
+script = SubResource("GDScript_la8pe")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_jpuks")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_r5jxp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_lcj4v")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
